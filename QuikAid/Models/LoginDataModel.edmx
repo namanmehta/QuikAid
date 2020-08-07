@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LoginDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="clientTable">
+          <Key>
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="clientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SSN" Type="varchar" MaxLength="10" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="userId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="phoneTable">
+          <Key>
+            <PropertyRef Name="phoneNumber" />
+          </Key>
+          <Property Name="phoneNumber" Type="int" Nullable="false" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_clientTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+          <End Role="clientTable" Type="Self.clientTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="clientTable">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_phoneTable_clientTable">
+          <End Role="clientTable" Type="Self.clientTable" Multiplicity="1" />
+          <End Role="phoneTable" Type="Self.phoneTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientTable">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="phoneTable">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LoginDBModelStoreContainer">
+          <EntitySet Name="clientTable" EntityType="Self.clientTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="phoneTable" EntityType="Self.phoneTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_clientTable_UserTable" Association="Self.FK_clientTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="clientTable" EntitySet="clientTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_phoneTable_clientTable" Association="Self.FK_phoneTable_clientTable">
+            <End Role="clientTable" EntitySet="clientTable" />
+            <End Role="phoneTable" EntitySet="phoneTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LoginDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="clientTable">
+          <Key>
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="clientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SSN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserTable" Relationship="Self.FK_clientTable_UserTable" FromRole="clientTable" ToRole="UserTable" />
+          <NavigationProperty Name="phoneTables" Relationship="Self.FK_phoneTable_clientTable" FromRole="clientTable" ToRole="phoneTable" />
+        </EntityType>
+        <EntityType Name="phoneTable">
+          <Key>
+            <PropertyRef Name="phoneNumber" />
+          </Key>
+          <Property Name="phoneNumber" Type="Int32" Nullable="false" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="clientTable" Relationship="Self.FK_phoneTable_clientTable" FromRole="phoneTable" ToRole="clientTable" />
+        </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="clientTables" Relationship="Self.FK_clientTable_UserTable" FromRole="UserTable" ToRole="clientTable" />
+        </EntityType>
+        <Association Name="FK_clientTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+          <End Role="clientTable" Type="Self.clientTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="clientTable">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_phoneTable_clientTable">
+          <End Role="clientTable" Type="Self.clientTable" Multiplicity="1" />
+          <End Role="phoneTable" Type="Self.phoneTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientTable">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="phoneTable">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LoginDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="clientTables" EntityType="Self.clientTable" />
+          <EntitySet Name="phoneTables" EntityType="Self.phoneTable" />
+          <EntitySet Name="UserTables" EntityType="Self.UserTable" />
+          <AssociationSet Name="FK_clientTable_UserTable" Association="Self.FK_clientTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="clientTable" EntitySet="clientTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_phoneTable_clientTable" Association="Self.FK_phoneTable_clientTable">
+            <End Role="clientTable" EntitySet="clientTables" />
+            <End Role="phoneTable" EntitySet="phoneTables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LoginDBModelStoreContainer" CdmEntityContainer="LoginDBEntities">
+          <EntitySetMapping Name="clientTables">
+            <EntityTypeMapping TypeName="LoginDBModel.clientTable">
+              <MappingFragment StoreEntitySet="clientTable">
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="fname" ColumnName="fname" />
+                <ScalarProperty Name="lName" ColumnName="lName" />
+                <ScalarProperty Name="SSN" ColumnName="SSN" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="phoneTables">
+            <EntityTypeMapping TypeName="LoginDBModel.phoneTable">
+              <MappingFragment StoreEntitySet="phoneTable">
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTables">
+            <EntityTypeMapping TypeName="LoginDBModel.UserTable">
+              <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

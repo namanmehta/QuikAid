@@ -1,0 +1,78 @@
+﻿@model IEnumerable<QuikAid.Models.clientTable>
+
+@{
+    ViewBag.Title = "Dashboard";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+}
+
+<h2>Dashboard</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.clientID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SSN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.userId)
+        </th>
+        <th></th>
+    </tr>
+    
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.clientID)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SSN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DOB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.userId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.clientID }) |
+
+            @Html.ActionLink("Delete", "Delete", new { id = item.clientID }) |
+
+            @Html.ActionLink("Add Phone Number", "AddPh", new { id = item.clientID }) 
+
+            
+        </td>
+    </tr>
+}
+
+</table>

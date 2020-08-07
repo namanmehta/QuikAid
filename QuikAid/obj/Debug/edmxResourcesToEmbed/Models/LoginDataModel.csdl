@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LoginDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="clientTable">
+    <Key>
+      <PropertyRef Name="clientID" />
+    </Key>
+    <Property Name="clientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="lName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SSN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="DOB" Type="DateTime" Precision="3" />
+    <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="userId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserTable" Relationship="Self.FK_clientTable_UserTable" FromRole="clientTable" ToRole="UserTable" />
+    <NavigationProperty Name="phoneTables" Relationship="Self.FK_phoneTable_clientTable" FromRole="clientTable" ToRole="phoneTable" />
+  </EntityType>
+  <EntityType Name="phoneTable">
+    <Key>
+      <PropertyRef Name="phoneNumber" />
+    </Key>
+    <Property Name="phoneNumber" Type="Int32" Nullable="false" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="clientTable" Relationship="Self.FK_phoneTable_clientTable" FromRole="phoneTable" ToRole="clientTable" />
+  </EntityType>
+  <EntityType Name="UserTable">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="clientTables" Relationship="Self.FK_clientTable_UserTable" FromRole="UserTable" ToRole="clientTable" />
+  </EntityType>
+  <Association Name="FK_clientTable_UserTable">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="clientTable" Type="Self.clientTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="clientTable">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_phoneTable_clientTable">
+    <End Role="clientTable" Type="Self.clientTable" Multiplicity="1" />
+    <End Role="phoneTable" Type="Self.phoneTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="clientTable">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="phoneTable">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LoginDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="clientTables" EntityType="Self.clientTable" />
+    <EntitySet Name="phoneTables" EntityType="Self.phoneTable" />
+    <EntitySet Name="UserTables" EntityType="Self.UserTable" />
+    <AssociationSet Name="FK_clientTable_UserTable" Association="Self.FK_clientTable_UserTable">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="clientTable" EntitySet="clientTables" />
+    </AssociationSet>
+    <AssociationSet Name="FK_phoneTable_clientTable" Association="Self.FK_phoneTable_clientTable">
+      <End Role="clientTable" EntitySet="clientTables" />
+      <End Role="phoneTable" EntitySet="phoneTables" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

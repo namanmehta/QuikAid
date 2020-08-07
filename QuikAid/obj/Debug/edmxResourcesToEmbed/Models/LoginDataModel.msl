@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="LoginDBModelStoreContainer" CdmEntityContainer="LoginDBEntities">
+    <EntitySetMapping Name="clientTables">
+      <EntityTypeMapping TypeName="LoginDBModel.clientTable">
+        <MappingFragment StoreEntitySet="clientTable">
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="fname" ColumnName="fname" />
+          <ScalarProperty Name="lName" ColumnName="lName" />
+          <ScalarProperty Name="SSN" ColumnName="SSN" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="phoneTables">
+      <EntityTypeMapping TypeName="LoginDBModel.phoneTable">
+        <MappingFragment StoreEntitySet="phoneTable">
+          <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTables">
+      <EntityTypeMapping TypeName="LoginDBModel.UserTable">
+        <MappingFragment StoreEntitySet="UserTable">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

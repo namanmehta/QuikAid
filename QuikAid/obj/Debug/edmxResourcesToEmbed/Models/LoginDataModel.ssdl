@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LoginDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="clientTable">
+    <Key>
+      <PropertyRef Name="clientID" />
+    </Key>
+    <Property Name="clientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="lName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="SSN" Type="varchar" MaxLength="10" />
+    <Property Name="DOB" Type="datetime" />
+    <Property Name="address" Type="varchar" MaxLength="50" />
+    <Property Name="userId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="phoneTable">
+    <Key>
+      <PropertyRef Name="phoneNumber" />
+    </Key>
+    <Property Name="phoneNumber" Type="int" Nullable="false" />
+    <Property Name="clientID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserTable">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_clientTable_UserTable">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="clientTable" Type="Self.clientTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="clientTable">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_phoneTable_clientTable">
+    <End Role="clientTable" Type="Self.clientTable" Multiplicity="1" />
+    <End Role="phoneTable" Type="Self.phoneTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="clientTable">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="phoneTable">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LoginDBModelStoreContainer">
+    <EntitySet Name="clientTable" EntityType="Self.clientTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="phoneTable" EntityType="Self.phoneTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_clientTable_UserTable" Association="Self.FK_clientTable_UserTable">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="clientTable" EntitySet="clientTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_phoneTable_clientTable" Association="Self.FK_phoneTable_clientTable">
+      <End Role="clientTable" EntitySet="clientTable" />
+      <End Role="phoneTable" EntitySet="phoneTable" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

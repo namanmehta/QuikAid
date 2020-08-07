@@ -1,0 +1,36 @@
+﻿model List<QuikAid.Models.phoneTable>
+
+        @{
+            ViewBag.Title = "IndexChart";
+        }
+
+    @model QuikAid.Models.phoneTable
+
+    @{
+        ViewBag.Title = "Add Phone";
+    }
+
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>
+        @{
+            var chart = new Chart(width: 129, height: 120, theme: ChartTheme.Blue)
+           .AddTitle("Distribution")
+           .AddSeries("Default", chartType: "Pie",
+                xValue: Model, xField: "ClientId",
+                yValues: Model, yFields: "TotalOrders")
+            .Write();
+        }
+    </body>
+    </html>
+
+    <div>
+        @Html.ActionLink("Back to List", "Dashboard")
+    </div>
+
